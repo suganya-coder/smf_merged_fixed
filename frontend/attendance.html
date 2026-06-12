@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>EduTrack Pro — Role Based Attendance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="attendance.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════ STANDALONE HEADER ═══════════════════ -->
+<header class="att-header">
+  <div class="att-header-inner">
+    <div class="att-brand">
+      <div class="att-brand-mark"><i class="fa fa-graduation-cap"></i></div>
+      <div>
+        <span class="att-brand-name">EduTrack <em>Pro</em></span>
+        <span class="att-brand-sub">Smart Attendance System</span>
+      </div>
+    </div>
+    <div class="att-header-right">
+      <div class="att-live-badge dn" id="attLiveBadge">
+        <span class="alb-pulse"></span>
+        <span id="attLiveBadgeText">Session Active</span>
+      </div>
+      <div class="att-header-time" id="attHeaderTime">—</div>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════ MAIN ═══════════════════ -->
+<main class="att-main">
+
+  <!-- PAGE TITLE -->
+  <div class="att-page-title-row">
+    <div class="att-page-title-left">
+      <div class="att-page-icon"><i class="fa fa-camera-viewfinder"></i></div>
+      <div>
+        <h1 class="att-page-title">Role Based Attendance</h1>
+        <p class="att-page-sub">Mark attendance using face recognition</p>
+      </div>
+    </div>
+    <div class="att-breadcrumb">
+      <span>Dashboard</span>
+      <i class="fa fa-chevron-right"></i>
+      <span class="active">Take Attendance</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1 — ROLE SELECTION CARDS (Enrollment style)
+  ══════════════════════════════════════════ -->
+  <section class="att-section" id="sectionRole">
+    <div class="att-section-header">
+      <i class="fa fa-users-rectangle"></i>
+      <div>
+        <h2 class="ash-title">Select Attendance Role</h2>
+        <p class="ash-sub">Choose a role to begin the face recognition session</p>
+      </div>
+    </div>
+
+    <div class="role-cards-grid">
+
+      <!-- Student Card -->
+      <div class="role-card" id="roleCard-student" onclick="attSelectRole('student')">
+        <div class="rc-badge rc-badge-student">Student</div>
+        <div class="rc-icon-wrap rc-icon-student">
+          <i class="fa fa-user-graduate"></i>
+        </div>
+        <div class="rc-title">Student</div>
+        <div class="rc-desc">Mark student attendance by dept, course, year &amp; section</div>
+        <button class="rc-action-btn rc-btn-student">
+          <i class="fa fa-camera"></i> Select Student
+        </button>
+        <div class="rc-selected-check dn" id="rcCheck-student">
+          <i class="fa fa-circle-check"></i>
+        </div>
+      </div>
+
+      <!-- Faculty Card -->
+      <div class="role-card" id="roleCard-staff" onclick="attSelectRole('staff')">
+        <div class="rc-badge rc-badge-staff">Faculty</div>
+        <div class="rc-icon-wrap rc-icon-staff">
+          <i class="fa fa-chalkboard-teacher"></i>
+        </div>
+        <div class="rc-title">Faculty / Staff</div>
+        <div class="rc-desc">Mark staff attendance by department and designation</div>
+        <button class="rc-action-btn rc-btn-staff">
+          <i class="fa fa-camera"></i> Select Faculty
+        </button>
+        <div class="rc-selected-check dn" id="rcCheck-staff">
+          <i class="fa fa-circle-check"></i>
+        </div>
+      </div>
+
+      <!-- HOD Card -->
+      <div class="role-card" id="roleCard-hod" onclick="attSelectRole('hod')">
+        <div class="rc-badge rc-badge-hod">HOD</div>
+        <div class="rc-icon-wrap rc-icon-hod">
+          <i class="fa fa-user-tie"></i>
+        </div>
+        <div class="rc-title">HOD</div>
+        <div class="rc-desc">Register Head of Department into the attendance system</div>
+        <button class="rc-action-btn rc-btn-hod">
+          <i class="fa fa-camera"></i> Select HOD
+        </button>
+        <div class="rc-selected-check dn" id="rcCheck-hod">
+          <i class="fa fa-circle-check"></i>
+        </div>
+      </div>
+
+    </div><!-- /role-cards-grid -->
+
+    <!-- COUNT STRIP (like Enrollment page) -->
+    <div class="role-count-strip">
+      <div class="rcs-item rcs-student">
+        <div class="rcsi-icon"><i class="fa fa-user-graduate"></i></div>
+        <div class="rcsi-num" id="cntStudents">0</div>
+        <div class="rcsi-label">Students</div>
+      </div>
+      <div class="rcs-item rcs-staff">
+        <div class="rcsi-icon"><i class="fa fa-chalkboard-teacher"></i></div>
+        <div class="rcsi-num" id="cntFaculty">0</div>
+        <div class="rcsi-label">Faculty</div>
+      </div>
+      <div class="rcs-item rcs-hod">
+        <div class="rcsi-icon"><i class="fa fa-user-tie"></i></div>
+        <div class="rcsi-num" id="cntHods">0</div>
+        <div class="rcsi-label">HODs</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2 — DYNAMIC FILTERS
+  ══════════════════════════════════════════ -->
+  <section class="att-section dn" id="sectionFilters">
+    <div class="att-section-header">
+      <i class="fa fa-sliders"></i>
+      <div>
+        <h2 class="ash-title" id="filterSectionTitle">Configure Filters</h2>
+        <p class="ash-sub" id="filterSectionSub">Set up attendance parameters for this session</p>
+      </div>
+      <button class="ash-change-btn" onclick="attResetRole()">
+        <i class="fa fa-arrow-left"></i> Change Role
+      </button>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-role-strip" id="filterRoleStrip">
+        <div class="frs-icon" id="frsIcon"><i class="fa fa-user-graduate"></i></div>
+        <div>
+          <div class="frs-label" id="frsLabel">Student Attendance</div>
+          <div class="frs-sub">Configure filters below, then start your session</div>
+        </div>
+      </div>
+      <div class="filter-fields" id="fpFields"></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SECTIONS 3–6  CAMERA + STATUS + RESULT
+  ══════════════════════════════════════════ -->
+  <div class="att-cam-layout">
+
+    <!-- LEFT: Camera + Controls -->
+    <div class="att-left-col">
+
+      <div class="att-col-label">
+        <span class="acl-num">03</span>
+        <span class="acl-text">Camera Preview</span>
+      </div>
+
+      <!-- Camera Viewport -->
+      <div class="cam-card" id="camWrap">
+        <!-- Idle -->
+        <div class="cam-idle" id="camIdle">
+          <div class="cam-offline-icon"><i class="fa fa-camera"></i></div>
+          <div class="cam-offline-title" id="camIdleTitle">Camera Offline</div>
+          <div class="cam-offline-hint" id="camIdleHint">Click 'Start Camera' to begin</div>
+        </div>
+
+        <!-- MJPEG feed -->
+        <img id="mjpegImg" class="cam-mjpeg dn" src="" alt="Live Feed"
+             onerror="if(typeof handleMjpegError==='function')handleMjpegError(this);"/>
+
+        <!-- Live overlay -->
+        <div class="cam-overlay dn" id="camOverlay">
+          <div class="cam-scanline"></div>
+          <div class="cam-grid-overlay"></div>
+          <div class="cam-face-box">
+            <div class="cfb-tl"></div><div class="cfb-tr"></div>
+            <div class="cfb-bl"></div><div class="cfb-br"></div>
+          </div>
+          <div class="cam-scan-label" id="camScanLabel">Scanning...</div>
+        </div>
+
+        <!-- Badges -->
+        <div class="cam-badge-live dn" id="camBadgeLive"><span class="cbl-dot"></span> LIVE</div>
+        <div class="cam-badge-role dn" id="camBadgeRole">Student</div>
+        <div class="cam-badge-error dn" id="camBadgeError"><i class="fa fa-triangle-exclamation"></i> Error</div>
+      </div>
+
+      <!-- Section 4: Controls -->
+      <div class="att-col-label" style="margin-top:18px">
+        <span class="acl-num">04</span>
+        <span class="acl-text">Session Controls</span>
+      </div>
+
+      <div class="session-ctrl-grid">
+        <button class="sc-btn sc-start" id="btnStart" onclick="startAttendance()">
+          <div class="scb-icon-wrap"><i class="fa fa-play"></i></div>
+          <div class="scb-info">
+            <span class="scb-label">Start Camera</span>
+            <span class="scb-hint">Begin face recognition</span>
+          </div>
+        </button>
+        <button class="sc-btn sc-stop" id="btnStop" onclick="stopAttendance()" disabled>
+          <div class="scb-icon-wrap"><i class="fa fa-stop"></i></div>
+          <div class="scb-info">
+            <span class="scb-label">Stop Session</span>
+            <span class="scb-hint">End recognition</span>
+          </div>
+        </button>
+        <button class="sc-btn sc-reset" id="btnReset" onclick="resetAttSession()" title="Refresh">
+          <div class="scb-icon-wrap"><i class="fa fa-rotate-right"></i></div>
+        </button>
+      </div>
+
+      <!-- Session stat chips -->
+      <div class="session-chips">
+        <div class="sch-chip">
+          <i class="fa fa-user-shield"></i>
+          <span id="chipRole">No role</span>
+        </div>
+        <div class="sch-chip">
+          <i class="fa fa-building-columns"></i>
+          <span id="chipDept">—</span>
+        </div>
+        <div class="sch-chip sch-green">
+          <i class="fa fa-user-check"></i>
+          <span id="chipPresent">0 present</span>
+        </div>
+        <div class="sch-chip sch-red">
+          <i class="fa fa-user-xmark"></i>
+          <span id="chipAbsent">0 absent</span>
+        </div>
+      </div>
+
+    </div><!-- /att-left-col -->
+
+    <!-- RIGHT: Last Detection (Attendance Order) -->
+    <div class="att-right-col">
+
+      <div class="att-col-label">
+        <span class="acl-num">05</span>
+        <span class="acl-text">Last Detection <span style="font-weight:400;color:var(--clr-muted,#94a3b8);font-size:.78rem;">(Attendance Order)</span></span>
+      </div>
+
+      <!-- Last Detection Ordered List -->
+      <div class="last-detect-card" id="lastDetectCard">
+        <!-- Camera-active success banner (shown briefly on each detection) -->
+        <div class="ldc-banner dn" id="ldcBanner">
+          <i class="fa fa-circle-check"></i>
+          <div>
+            <div class="ldc-banner-name" id="ldcBannerName">—</div>
+            <div class="ldc-banner-sub">Attendance Marked</div>
+          </div>
+        </div>
+
+        <!-- Ordered list of detected students -->
+        <div class="ldc-list" id="ldcList">
+          <div class="ldc-empty" id="ldcEmpty">
+            <i class="fa fa-user-circle"></i>
+            <span>No detections yet</span>
+          </div>
+        </div>
+
+        <!-- Total present footer -->
+        <div class="ldc-footer" id="ldcFooter">
+          <i class="fa fa-circle-check" style="color:#10B981"></i>
+          <span>Total Present: <strong id="ldcTotalCount">0</strong></span>
+        </div>
+      </div>
+
+    </div><!-- /att-right-col -->
+  </div><!-- /att-cam-layout -->
+
+  <!-- ══════════════════════════════════════════
+       SECTION 7 — LIVE ATTENDANCE TABLE
+  ══════════════════════════════════════════ -->
+  <section class="att-section" style="margin-top:24px" id="sectionTable">
+    <div class="att-section-header">
+      <i class="fa fa-table-list"></i>
+      <div>
+        <h2 class="ash-title">Live Attendance Table</h2>
+        <p class="ash-sub">Auto-updates as attendance is marked</p>
+      </div>
+      <div class="ash-actions">
+        <span class="ash-count-pill" id="latCountPill">0 records</span>
+        <button class="ash-icon-btn" onclick="exportTodayCSVAtt()" title="Export CSV">
+          <i class="fa fa-download"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="live-table-card">
+      <div class="lt-progress"><div class="lt-progress-fill" id="ltProgressFill" style="width:0%"></div></div>
+      <div class="lt-stats-strip">
+        <div class="lts-item lts-present">
+          <i class="fa fa-user-check"></i>
+          <span id="ltPresent">0</span> Present
+        </div>
+        <div class="lts-item lts-absent">
+          <i class="fa fa-user-minus"></i>
+          <span id="ltAbsent">0</span> Absent
+        </div>
+        <div class="lts-item lts-total">
+          <i class="fa fa-users"></i>
+          <span id="ltTotal">0</span> Total
+        </div>
+      </div>
+      <div class="lt-scroll">
+        <table class="lt-table" id="liveTable">
+          <thead>
+            <tr>
+              <th class="lt-th-num">#</th>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="liveTableBody">
+            <tr class="lt-empty-row">
+              <td colspan="8">
+                <div class="lt-empty-state">
+                  <i class="fa fa-inbox"></i>
+                  <p>No attendance records yet — start a session to begin marking</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script src="app.js"></script>
+<script src="attendance.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  function tick() {
+    const el = document.getElementById('attHeaderTime');
+    if (el) el.textContent = new Date().toLocaleTimeString('en-IN', {
+      hour:'2-digit', minute:'2-digit', second:'2-digit'
+    });
+  }
+  tick(); setInterval(tick, 1000);
+});
+</script>
+</body>
+</html>

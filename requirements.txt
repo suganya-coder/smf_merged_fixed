@@ -1,0 +1,47 @@
+# ============================================================
+#  Smart Attendance System v9.6  —  requirements.txt
+#  MERGED with EduTrack Pro Auth Module (E project)
+# ============================================================
+
+# ── Core CV / Face Recognition ───────────────────────────────
+opencv-contrib-python>=4.8.0
+numpy>=1.24.0
+Pillow>=10.0.0
+
+# ── ML ───────────────────────────────────────────────────────
+scikit-learn>=1.3.0
+
+# ── Database ─────────────────────────────────────────────────
+psycopg2-binary>=2.9.0      # PostgreSQL (optional, SQLite is default)
+
+# ── API Framework ────────────────────────────────────────────
+fastapi>=0.111.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9
+pydantic[email]>=2.7.1      # [email] needed for EmailStr in OTP routes
+
+# ── Auth — REPLACED PyJWT with python-jose + passlib ─────────
+# PyJWT REMOVED — replaced by python-jose below
+python-jose[cryptography]==3.3.0   # JWT encoding/decoding
+passlib[bcrypt]==1.7.4             # bcrypt password hashing
+bcrypt==4.0.1                      # pinned for passlib compatibility
+
+# ── Rate Limiting (new — from E project) ─────────────────────
+slowapi==0.1.9
+
+# ── Environment config ────────────────────────────────────────
+python-dotenv>=1.0.1
+
+# ── Data ─────────────────────────────────────────────────────
+pandas>=2.0.0
+
+# ── Face recognition ─────────────────────────────────────────
+cmake
+dlib
+face-recognition
+
+# ── Skeleton liveness ────────────────────────────────────────
+mediapipe>=0.10.0
+
+# ── Export ───────────────────────────────────────────────────
+openpyxl>=3.1.0

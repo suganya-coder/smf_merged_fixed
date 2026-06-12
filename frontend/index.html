@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>EduTrack Pro — Smart Attendance System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="features.css"/>
+<link rel="stylesheet" href="attendance.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════ LOGIN SCREEN ═══════════════════ -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-bg">
+    <div class="lb-circle c1"></div>
+    <div class="lb-circle c2"></div>
+    <div class="lb-circle c3"></div>
+    <div class="lb-grid"></div>
+  </div>
+
+  <div class="login-wrap">
+    <!-- Brand -->
+    <div class="login-brand">
+      <div class="brand-mark"><i class="fa fa-graduation-cap"></i></div>
+      <div>
+        <h1 class="brand-name">EduTrack <span>Pro</span></h1>
+        <p class="brand-tag">Smart Attendance & Analytics Platform</p>
+      </div>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <!-- Portal Tabs -->
+      <div class="portal-tabs">
+        <button class="ptab active" data-portal="admin" onclick="switchPortal(this,'admin')">
+          <i class="fa fa-shield-halved"></i> Admin Portal
+        </button>
+        <button class="ptab" data-portal="faculty" onclick="switchPortal(this,'faculty')">
+          <i class="fa fa-chalkboard-teacher"></i> Faculty Portal
+        </button>
+      </div>
+
+      <!-- Admin Portal -->
+      <div id="adminPortal" class="portal-panel">
+        <div class="portal-header">
+          <h3>Admin / HOD Sign In</h3>
+          <p>Select your role and enter your credentials</p>
+        </div>
+        <div class="login-field">
+          <label>Login As</label>
+          <div class="lf-wrap"><i class="fa fa-user-shield"></i>
+            <select id="adminRoleSelect" onchange="onAdminRoleChange()" style="flex:1;background:none;border:none;font-size:.95rem;color:inherit;outline:none;">
+              <option value="admin" data-email="suganyainbox25@gmail.com">&#x1F6E1; Admin</option>
+              <option value="hod"   data-email="suganyainbox32@gmail.com">&#x1F454; HOD</option>
+            </select>
+          </div>
+        </div>
+        <!-- Admin email display (hidden for HOD custom login) -->
+        <div class="login-field" id="adminEmailField">
+          <label>Email <span id="adminEmailDisplay" style="font-weight:600;color:#4f8ef7;font-size:0.85rem">admin@college.edu</span></label>
+          <input id="adminEmail" type="hidden" value="admin@college.edu"/>
+        </div>
+        <!-- HOD ID field — shown only when HOD role is selected -->
+        <div class="login-field dn" id="hodLoginField">
+          <label>HOD ID or Email</label>
+          <div class="lf-wrap"><i class="fa fa-id-badge"></i>
+            <input id="hodLoginId" type="text" placeholder="e.g. HOD001 or hod@college.edu"/>
+          </div>
+          <p style="font-size:.75rem;color:#888;margin:.25rem 0 0"><i class="fa fa-info-circle"></i> Enter your HOD ID (e.g. HOD001) or registered email</p>
+        </div>
+        <div class="login-field">
+          <label>Password</label>
+          <div class="lf-wrap" style="position:relative;">
+            <i class="fa fa-lock" style="color:#4f8ef7"></i>
+            <input id="adminPass" type="password" placeholder="Enter your password"
+              style="flex:1;background:none;border:none;outline:none;font-size:.95rem;color:inherit;letter-spacing:.06em;"
+              autocomplete="current-password"/>
+            <button type="button" class="pw-toggle-btn" onclick="(function(btn){var inp=document.getElementById('adminPass');inp.type=inp.type==='password'?'text':'password';btn.querySelector('i').className='fa fa-'+(inp.type==='password'?'eye':'eye-slash');})(this)"
+              title="Toggle password visibility">
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
+          <p style="font-size:.74rem;color:#888;margin:.3rem 0 0">
+            <i class="fa fa-circle-info"></i> Default — Admin: <b>Admin@123</b> &nbsp;·&nbsp; HOD: <b>Hod@123</b>
+          </p>
+        </div>
+        <button class="btn-signin" onclick="loginAdmin()">
+          <i class="fa fa-right-to-bracket"></i> Sign In
+        </button>
+        <p class="login-hint"><i class="fa fa-info-circle"></i> Only registered Admin and HOD accounts are allowed.</p>
+      </div>
+
+      <!-- Faculty Portal -->
+      <div id="facultyPortal" class="portal-panel dn">
+        <div class="portal-header">
+          <h3>Faculty Sign In</h3>
+          <p>Enter your Faculty ID and password to sign in</p>
+        </div>
+        <div class="login-field">
+          <label>Faculty ID</label>
+          <div class="lf-wrap"><i class="fa fa-id-card"></i>
+            <input id="facIdInput" type="text" placeholder="e.g. FAC001" value="FAC001"/>
+          </div>
+        </div>
+        <div class="login-field">
+          <label>Password</label>
+          <div class="lf-wrap" style="position:relative;">
+            <i class="fa fa-lock" style="color:#4f8ef7"></i>
+            <input id="facPassText" type="password" placeholder="Enter your password"
+              style="flex:1;background:none;border:none;outline:none;font-size:.95rem;color:inherit;letter-spacing:.06em;"
+              autocomplete="current-password"/>
+            <button type="button" class="pw-toggle-btn" onclick="(function(btn){var inp=document.getElementById('facPassText');inp.type=inp.type==='password'?'text':'password';btn.querySelector('i').className='fa fa-'+(inp.type==='password'?'eye':'eye-slash');})(this)"
+              title="Toggle password visibility">
+              <i class="fa fa-eye"></i>
+            </button>
+          </div>
+          <p style="font-size:.74rem;color:#888;margin:.3rem 0 0">
+            <i class="fa fa-circle-info"></i> Default Password — Staff: <b>Staff@123</b>
+          </p>
+        </div>
+        <button class="btn-signin" onclick="loginFaculty()">
+          <i class="fa fa-right-to-bracket"></i> Faculty Sign In
+        </button>
+        
+      </div>
+    </div>
+
+    <p class="login-footer-note">© 2025 EduTrack Pro · Smart Attendance & Performance Analytics</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ APP SHELL ═══════════════════ -->
+<div id="appShell" class="app-shell dn">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-head">
+      <div class="sb-brand">
+        <div class="sb-icon"><i class="fa fa-graduation-cap"></i></div>
+        <div class="sb-title-wrap">
+          <span class="sb-title">EduTrack <b>Pro</b></span>
+          <span class="sb-version">Smart Attendance</span>
+        </div>
+      </div>
+      <button class="sb-hamburger" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+    </div>
+
+    <!-- User card in sidebar -->
+    <div class="sb-user-card" id="sbUserCard">
+      <div class="suc-av" id="sucAv">AD</div>
+      <div class="suc-info">
+        <div class="suc-name" id="sucName">Administrator</div>
+        <div class="suc-role" id="sucRole">System Admin</div>
+        <div class="suc-dept" id="sucDept">All Departments</div>
+      </div>
+    </div>
+
+    <nav class="sb-nav" id="sbNav"><!-- built by JS --></nav>
+
+    <div class="sb-bottom">
+      <div class="sb-status">
+        <span class="status-dot"></span>
+        <span>System Active</span>
+      </div>
+      <button class="sb-logout-btn" onclick="doLogout()">
+        <i class="fa fa-right-from-bracket"></i> Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="app-main" id="appMain">
+
+    <!-- TOP BAR -->
+    <header class="topbar" id="topbar">
+      <div class="tb-l">
+        <button class="mob-ham" onclick="toggleSidebar()"><i class="fa fa-bars"></i></button>
+        <div class="tb-page-title" id="tbPageTitle">Dashboard</div>
+      </div>
+      <div class="tb-r">
+        <div class="tb-clock" id="tbClock"></div>
+        <button class="tb-icon-btn notif-btn" onclick="showPage('alerts')">
+          <i class="fa fa-bell"></i>
+          <span class="notif-badge" id="notifBadge">0</span>
+        </button>
+        <div class="tb-profile" id="tbProfile">
+          <div class="tbp-av" id="tbpAv">AD</div>
+          <div class="tbp-info">
+            <span class="tbp-name" id="tbpName">Admin</span>
+            <span class="tbp-role" id="tbpRole">Administrator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE AREA -->
+    <div class="page-area" id="pageArea">
+
+      <!-- ╔══════════════════════╗
+           ║  DASHBOARD (role)    ║
+           ╚══════════════════════╝ -->
+      <div id="pg-dashboard" class="page dn">
+        <div id="dashboardContent"><!-- role-based --></div>
+      </div>
+
+      <!-- ╔══════════════════════════════╗
+           ║  TAKE ATTENDANCE (ROLE-BASED) ║
+           ╚══════════════════════════════╝ -->
+      <div id="pg-attendance" class="page dn">
+
+        <!-- ── Page Header ───────────────────────────────── -->
+        <div class="page-header">
+          <div class="ph-left">
+            <h2>Role-Based Attendance</h2>
+            <p>Mark attendance using live face recognition</p>
+          </div>
+          <div class="ph-right">
+            <div class="att-live-badge dn" id="attLiveBadge">
+              <span class="alb-pulse"></span>
+              <span id="attLiveBadgeText">Session Active</span>
+            </div>
+            <div id="attHeaderTime" style="font-size:.82rem;color:var(--text3);font-family:monospace;letter-spacing:.03em"></div>
+          </div>
+        </div>
+
+        <!-- ══════════ STEP 1: ROLE CARDS ══════════ -->
+        <section class="att-section" id="sectionRole">
+          <div class="att-section-header">
+            <i class="fa fa-users-rectangle"></i>
+            <div>
+              <h2 class="ash-title">Select Attendance Role</h2>
+              <p class="ash-sub">Choose who is marking attendance today</p>
+            </div>
+          </div>
+          <div class="role-cards-grid">
+            <div class="role-card" id="roleCard-student" onclick="attSelectRole('student')">
+              <div class="rc-badge rc-badge-student">Student</div>
+              <div class="rc-icon-wrap rc-icon-student"><i class="fa fa-user-graduate"></i></div>
+              <div class="rc-title">Student</div>
+              <div class="rc-desc">Mark student attendance by dept, course, year &amp; section</div>
+              <button class="rc-action-btn rc-btn-student"><i class="fa fa-camera"></i> Select Student</button>
+              <div class="rc-selected-check dn" id="rcCheck-student"><i class="fa fa-circle-check"></i></div>
+            </div>
+            <div class="role-card" id="roleCard-staff" onclick="attSelectRole('staff')">
+              <div class="rc-badge rc-badge-staff">Faculty</div>
+              <div class="rc-icon-wrap rc-icon-staff"><i class="fa fa-chalkboard-teacher"></i></div>
+              <div class="rc-title">Staff / Faculty</div>
+              <div class="rc-desc">Mark staff attendance by department and staff member</div>
+              <button class="rc-action-btn rc-btn-staff"><i class="fa fa-camera"></i> Select Faculty</button>
+              <div class="rc-selected-check dn" id="rcCheck-staff"><i class="fa fa-circle-check"></i></div>
+            </div>
+            <div class="role-card" id="roleCard-hod" onclick="attSelectRole('hod')">
+              <div class="rc-badge rc-badge-hod">HOD</div>
+              <div class="rc-icon-wrap rc-icon-hod"><i class="fa fa-user-tie"></i></div>
+              <div class="rc-title">HOD</div>
+              <div class="rc-desc">Mark Head of Department attendance</div>
+              <button class="rc-action-btn rc-btn-hod"><i class="fa fa-camera"></i> Select HOD</button>
+              <div class="rc-selected-check dn" id="rcCheck-hod"><i class="fa fa-circle-check"></i></div>
+            </div>
+          </div>
+          <div class="role-count-strip">
+            <div class="rcs-item rcs-student">
+              <div class="rcsi-icon"><i class="fa fa-user-graduate"></i></div>
+              <div class="rcsi-num" id="cntStudents">0</div>
+              <div class="rcsi-label">Students</div>
+            </div>
+            <div class="rcs-item rcs-staff">
+              <div class="rcsi-icon"><i class="fa fa-chalkboard-teacher"></i></div>
+              <div class="rcsi-num" id="cntFaculty">0</div>
+              <div class="rcsi-label">Faculty</div>
+            </div>
+            <div class="rcs-item rcs-hod">
+              <div class="rcsi-icon"><i class="fa fa-user-tie"></i></div>
+              <div class="rcsi-num" id="cntHods">0</div>
+              <div class="rcsi-label">HODs</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══════════ STEP 2: FILTERS ══════════ -->
+        <section class="att-section dn" id="sectionFilters">
+          <div class="att-section-header">
+            <i class="fa fa-sliders"></i>
+            <div>
+              <h2 class="ash-title" id="filterSectionTitle">Configure Filters</h2>
+              <p class="ash-sub" id="filterSectionSub">Set attendance parameters for this session</p>
+            </div>
+            <button class="ash-change-btn" onclick="attResetRole()">
+              <i class="fa fa-arrow-left"></i> Change Role
+            </button>
+          </div>
+          <div class="filter-card">
+            <div class="filter-role-strip" id="filterRoleStrip">
+              <div class="frs-icon" id="frsIcon"><i class="fa fa-user-graduate"></i></div>
+              <div>
+                <div class="frs-label" id="frsLabel">Student Attendance</div>
+                <div class="frs-sub">Configure filters below, then start your session</div>
+              </div>
+            </div>
+            <div class="filter-fields" id="fpFields"></div>
+          </div>
+        </section>
+
+        <!-- ══════════ STEP 3-6: CAMERA + STATUS + RESULT ══════════ -->
+        <div class="att-cam-layout">
+
+          <!-- LEFT: Camera + Controls -->
+          <div class="att-left-col">
+            <div class="att-col-label"><span class="acl-num">03</span><span class="acl-text">Camera Preview</span></div>
+
+            <div class="cam-card" id="camWrap">
+              <div class="cam-idle" id="camIdle">
+                <div class="cam-offline-icon"><i class="fa fa-camera"></i></div>
+                <div class="cam-offline-title" id="camIdleTitle">Camera Offline</div>
+                <div class="cam-offline-hint" id="camIdleHint">Click 'Start Camera' to begin</div>
+              </div>
+              <img id="mjpegImg" class="cam-mjpeg dn" src="" alt="Live Feed" onerror="if(typeof handleMjpegError==='function')handleMjpegError(this);"/>
+              <div class="cam-overlay dn" id="camOverlay">
+                <div class="cam-scanline"></div>
+                <div class="cam-grid-overlay"></div>
+                <div class="cam-face-box">
+                  <div class="cfb-tl"></div><div class="cfb-tr"></div>
+                  <div class="cfb-bl"></div><div class="cfb-br"></div>
+                </div>
+                <div class="cam-scan-label" id="camScanLabel">Scanning...</div>
+              </div>
+              <div class="cam-badge-live dn" id="camBadgeLive"><span class="cbl-dot"></span> LIVE</div>
+              <div class="cam-badge-role dn" id="camBadgeRole">Student</div>
+              <div class="cam-badge-error dn" id="camBadgeError"><i class="fa fa-triangle-exclamation"></i> Error</div>
+            </div>
+
+            <div class="att-col-label" style="margin-top:18px"><span class="acl-num">04</span><span class="acl-text">Session Controls</span></div>
+            <div class="session-ctrl-grid">
+              <button class="sc-btn sc-start" id="btnStart" onclick="startAttendance()">
+                <div class="scb-icon-wrap"><i class="fa fa-play"></i></div>
+                <div class="scb-info"><span class="scb-label">Start Camera</span><span class="scb-hint">Begin face recognition</span></div>
+              </button>
+              <button class="sc-btn sc-stop" id="btnStop" onclick="stopAttendance()" disabled>
+                <div class="scb-icon-wrap"><i class="fa fa-stop"></i></div>
+                <div class="scb-info"><span class="scb-label">Stop Session</span><span class="scb-hint">End recognition</span></div>
+              </button>
+              <button class="sc-btn sc-reset" id="btnReset" onclick="resetAttSession()" title="Refresh">
+                <div class="scb-icon-wrap"><i class="fa fa-rotate-right"></i></div>
+              </button>
+            </div>
+            <div class="session-chips">
+              <div class="sch-chip"><i class="fa fa-user-shield"></i><span id="chipRole">No role</span></div>
+              <div class="sch-chip"><i class="fa fa-building-columns"></i><span id="chipDept">—</span></div>
+              <div class="sch-chip"><i class="fa fa-book-open"></i><span id="chipCourse">—</span></div>
+              <div class="sch-chip"><i class="fa fa-layer-group"></i><span id="chipSection">—</span></div>
+              <div class="sch-chip sch-green"><i class="fa fa-user-check"></i><span id="chipPresent">0 present</span></div>
+              <div class="sch-chip sch-red"><i class="fa fa-user-xmark"></i><span id="chipAbsent">0 absent</span></div>
+              <div class="sch-chip"><i class="fa fa-clock"></i><span id="chipTimer">00:00</span></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Last Detection (Attendance Order) -->
+          <div class="att-right-col">
+            <div class="att-col-label">
+              <span class="acl-num">05</span>
+              <span class="acl-text">Last Detection <span style="font-weight:400;color:var(--text3);font-size:.78rem;">(Attendance Order)</span></span>
+            </div>
+
+            <div class="last-detect-card" id="lastDetectCard">
+              <!-- Green banner shown briefly on each new detection -->
+              <div class="ldc-banner dn" id="ldcBanner">
+                <i class="fa fa-circle-check"></i>
+                <div>
+                  <div class="ldc-banner-name" id="ldcBannerName">—</div>
+                  <div class="ldc-banner-sub">Attendance Marked</div>
+                </div>
+              </div>
+              <!-- Ordered list -->
+              <div class="ldc-list" id="ldcList">
+                <div class="ldc-empty" id="ldcEmpty">
+                  <i class="fa fa-user-circle"></i>
+                  <span>No detections yet</span>
+                </div>
+              </div>
+              <!-- Total present footer -->
+              <div class="ldc-footer" id="ldcFooter" style="display:none">
+                <i class="fa fa-circle-check" style="color:#10B981"></i>
+                <span>Total Present: <strong id="ldcTotalCount">0</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════ STEP 7: LIVE TABLE ══════════ -->
+        <section class="att-section" style="margin-top:24px" id="sectionTable">
+          <div class="att-section-header">
+            <i class="fa fa-table-list"></i>
+            <div><h2 class="ash-title">Live Attendance Table</h2><p class="ash-sub">Auto-updates as attendance is marked</p></div>
+            <div class="ash-actions">
+              <span class="ash-count-pill" id="latCountPill">0 records</span>
+              <button class="ash-icon-btn" onclick="exportTodayCSVAtt()" title="Export CSV"><i class="fa fa-download"></i></button>
+            </div>
+          </div>
+          <div class="live-table-card">
+            <div class="lt-progress"><div class="lt-progress-fill" id="ltProgressFill" style="width:0%"></div></div>
+            <div class="lt-stats-strip">
+              <div class="lts-item lts-present"><i class="fa fa-user-check"></i><span id="ltPresent">0</span> Present</div>
+              <div class="lts-item lts-absent"><i class="fa fa-user-minus"></i><span id="ltAbsent">0</span> Absent</div>
+              <div class="lts-item lts-total"><i class="fa fa-users"></i><span id="ltTotal">0</span> Total</div>
+            </div>
+            <div class="lt-scroll">
+              <table class="lt-table" id="liveTable">
+                <thead>
+                  <tr><th class="lt-th-num">#</th><th>ID</th><th>Name</th><th>Role</th><th>Department</th><th>Date</th><th>Time</th><th>Status</th></tr>
+                </thead>
+                <tbody id="liveTableBody">
+                  <tr class="lt-empty-row"><td colspan="8"><div class="lt-empty-state"><i class="fa fa-inbox"></i><p>No attendance records yet — start a session to begin marking</p></div></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /pg-attendance -->
+
+      <!-- ╔══════════════════════╗
+           ║  TIMETABLE           ║
+           ╚══════════════════════╝ -->
+      <div id="pg-timetable" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>Timetable</h2><p>Weekly schedule by Department → Year → Semester → Section</p></div>
+          <div class="ph-right" id="ttHeaderControls">
+            <select class="sel" id="ttDept" onchange="ttOnDeptChange()">
+              <option value="">Department</option>
+              <option value="CSE">CSE</option>
+              <option value="AIDS">AIDS</option>
+              <option value="CSBS">CSBS</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="MECH">MECH</option>
+              <option value="CIVIL">CIVIL</option>
+              <option value="BME">BME</option>
+            </select>
+            <select class="sel" id="ttCourse" onchange="ttOnCourseChange()">
+              <option value="">Year</option>
+              <option value="1">Year 1</option>
+              <option value="2">Year 2</option>
+              <option value="3">Year 3</option>
+              <option value="4">Year 4</option>
+            </select>
+            <select class="sel" id="ttSemester" onchange="ttOnSemesterChange()" style="display:none">
+              <option value="">Semester</option>
+            </select>
+            <select class="sel" id="ttSection" onchange="renderTimetable()" style="display:none">
+              <option value="">Section</option>
+              <option value="A">Section A</option>
+              <option value="B">Section B</option>
+              <option value="C">Section C</option>
+            </select>
+            <button class="btn-sm" onclick="renderSeedTimetablePanel()" title="Seed full timetable data"><i class="fa fa-database"></i> Seed DB</button>
+          </div>
+        </div>
+        <div id="ttContent">
+          <div class="empty-msg"><i class="fa fa-calendar-days"></i><p>Select Department, Year, Semester and Section to view timetable</p></div>
+        </div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  DEPARTMENTS DRILL   ║
+           ╚══════════════════════╝ -->
+      <div id="pg-departments" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>Departments</h2><p>Drill-down: Dept → Course → Section → Students</p></div>
+        </div>
+        <div class="breadcrumb-trail" id="breadTrail"></div>
+        <div id="drillContent"><!-- dynamic --></div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  FACULTY MANAGEMENT  ║
+           ╚══════════════════════╝ -->
+      <div id="pg-faculty" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>Faculty Management</h2><p>Faculty attendance, profiles & analytics — Admin/HOD only</p></div>
+          <div class="ph-right">
+            <select class="sel" id="facMgmtDept" onchange="renderFacultyPage()">
+              <option value="">All Departments</option>
+            </select>
+            <input type="date" class="sel" id="facMgmtDate" onchange="renderFacultyPage()"/>
+            <button class="btn-primary" onclick="openMarkFacultyModal()"><i class="fa fa-plus"></i> Mark Attendance</button>
+          </div>
+        </div>
+        <!-- KPIs -->
+        <div class="kpi-strip" id="facKpiStrip"></div>
+        <!-- Charts -->
+        <div class="two-col">
+          <div class="card"><div class="card-head"><h4><i class="fa fa-chart-bar"></i> Dept-wise Faculty Attendance</h4></div>
+            <div class="chart-pad"><canvas id="facDeptBarChart" height="180"></canvas></div></div>
+          <div class="card"><div class="card-head"><h4><i class="fa fa-chart-pie"></i> Attendance Status Split</h4></div>
+            <div class="chart-pad"><canvas id="facStatusDonut" height="180"></canvas></div></div>
+        </div>
+        <!-- Faculty Table -->
+        <div class="card">
+          <div class="card-head">
+            <h4><i class="fa fa-users"></i> Faculty Roster</h4>
+            <div class="ch-actions">
+              <div class="search-box"><i class="fa fa-search"></i><input id="facSearch" placeholder="Search name, ID..." oninput="renderFacultyPage()"/></div>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-tbl" id="facTable">
+              <thead><tr><th>Faculty</th><th>ID</th><th>Department</th><th>Subject(s)</th><th>Designation</th><th>Today</th><th>Overall%</th><th>Actions</th></tr></thead>
+              <tbody id="facTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Faculty-wise Drill: Course/Subject Analysis -->
+        <div class="card">
+          <div class="card-head"><h4><i class="fa fa-chart-line"></i> Faculty Subject-wise Attendance Comparison</h4></div>
+          <div class="chart-pad"><canvas id="facSubjectChart" height="130"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  OVERRIDES           ║
+           ╚══════════════════════╝ -->
+      <div id="pg-overrides" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>Attendance Overrides</h2><p>Hierarchical role-based corrections with full audit trail</p></div>
+          <div class="ph-right">
+            <button id="ovNewOverrideBtn" class="btn-primary" onclick="openOverrideModal()"><i class="fa fa-pen-to-square"></i> New Override</button>
+          </div>
+        </div>
+        <!-- ── Section A: Faculty Pending Correction Requests ── -->
+        <div id="facPendingSection" class="card dn" style="margin-bottom:1.2rem">
+          <div class="card-head">
+            <h4><i class="fa fa-inbox" style="color:#f59e0b"></i> Pending Student Correction Requests <span id="facPendingCount" style="background:#fef3c7;color:#92400e;border-radius:20px;padding:2px 10px;font-size:.78rem;font-weight:700;margin-left:6px">0</span></h4>
+            <div class="ch-actions">
+              <button class="btn-sm" onclick="loadFacultyPendingRequests()" style="background:var(--accent);color:#fff"><i class="fa fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div id="facPendingBody">
+            <div style="text-align:center;padding:28px;color:var(--text2)"><i class="fa fa-spinner fa-spin"></i> Loading...</div>
+          </div>
+        </div>
+
+        <!-- KPI Strip -->
+        <div class="kpi-strip" id="ovKpiStrip">
+          <div class="kpi-card" style="--kc:#e8f4fd"><div class="kpi-icon" style="color:#3b82f6"><i class="fa fa-pen-to-square"></i></div><div class="kpi-val" id="ovKpiTotal">—</div><div class="kpi-lbl">Total Overrides</div></div>
+          <div class="kpi-card" style="--kc:#fef3c7"><div class="kpi-icon" style="color:#d97706"><i class="fa fa-calendar-day"></i></div><div class="kpi-val" id="ovKpiToday">—</div><div class="kpi-lbl">Today</div></div>
+          <div class="kpi-card" style="--kc:#f0fdf4"><div class="kpi-icon" style="color:#16a34a"><i class="fa fa-users"></i></div><div class="kpi-val" id="ovKpiStaff">—</div><div class="kpi-lbl">Staff Involved</div></div>
+          <div class="kpi-card" style="--kc:#fdf2f8"><div class="kpi-icon" style="color:#9333ea"><i class="fa fa-shield-halved"></i></div><div class="kpi-val" id="ovKpiLast">—</div><div class="kpi-lbl">Last Override By</div></div>
+        </div>
+        <!-- Override History Table -->
+        <div class="card">
+          <div class="card-head">
+            <h4><i class="fa fa-clock-rotate-left"></i> Override History</h4>
+            <div class="ch-actions" style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+              <select class="sel-sm" id="ovFilterDept" onchange="renderOverridesPage()"><option value="">All Depts</option></select>
+              <select class="sel-sm" id="ovFilterYear" onchange="renderOverridesPage()"><option value="">All Years</option><option value="1">1st Year</option><option value="2">2nd Year</option><option value="3">3rd Year</option><option value="4">4th Year</option></select>
+              <select class="sel-sm" id="ovFilterSem" onchange="renderOverridesPage()"><option value="">All Sems</option><option value="1">Sem 1</option><option value="2">Sem 2</option><option value="3">Sem 3</option><option value="4">Sem 4</option><option value="5">Sem 5</option><option value="6">Sem 6</option><option value="7">Sem 7</option><option value="8">Sem 8</option></select>
+              <select class="sel-sm" id="ovFilterSec" onchange="renderOverridesPage()"><option value="">All Sections</option><option value="A">Section A</option><option value="B">Section B</option><option value="C">Section C</option></select>
+              <select class="sel-sm" id="ovTypeFilter" onchange="renderOverridesPage()">
+                <option value="">All Types</option>
+                <option value="Staff Override">Staff</option>
+                <option value="Class Incharge">Class Incharge</option>
+                <option value="Admin/HOD">Admin/HOD</option>
+              </select>
+              <button class="btn-sm" onclick="renderOverridesPage()" style="background:var(--accent);color:#fff"><i class="fa fa-rotate"></i> Refresh</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-tbl" id="ovHistoryTable">
+              <thead>
+                <tr>
+                  <th>Department</th><th>Year</th><th>Semester</th><th>Section</th>
+                  <th>Register No.</th><th>Student Name</th>
+                  <th>Course Code</th><th>Course Name</th>
+                  <th>Period</th><th>From</th><th>To</th>
+                  <th>Reason</th><th>Override By</th><th>Staff ID</th>
+                  <th>Role</th><th>Date</th><th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="ovTbody"></tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Legacy Audit Log (backward compat) -->
+        <div class="card" style="margin-top:1.2rem">
+          <div class="card-head">
+            <h4><i class="fa fa-history"></i> Legacy Audit Log <span style="font-size:.75rem;color:var(--text3);font-weight:400">(old override_log table)</span></h4>
+            <div class="ch-actions">
+              <select class="sel-sm" id="ovLegacyFilter" onchange="renderLegacyOverridePage()">
+                <option value="">All Types</option>
+                <option value="staff">Staff</option>
+                <option value="classincharge">Class Incharge</option>
+                <option value="admin">Admin/HOD</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="data-tbl">
+              <thead><tr><th>Date/Time</th><th>By</th><th>Staff ID</th><th>Student</th><th>Course/Sec</th><th>Period</th><th>From→To</th><th>Reason</th></tr></thead>
+              <tbody id="ovLegacyTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  ANALYTICS           ║
+           ╚══════════════════════╝ -->
+      <div id="pg-analytics" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>Analytics</h2><p>Multi-level attendance intelligence</p></div>
+          <div class="ph-right">
+            <select class="sel" id="anlLevel" onchange="onAnlLevelChange()">
+              <option value="overall">🏫 Overall Institution</option>
+              <option value="dept">🏢 Department Level</option>
+              <option value="course">📚 Course Level</option>
+              <option value="section">🏛️ Section Level</option>
+              <option value="faculty">👨‍🏫 Faculty Analytics</option>
+            </select>
+            <select class="sel dn" id="anlDeptSel" onchange="renderAnalytics()"><option value="">Dept</option></select>
+            <select class="sel dn" id="anlCourseSel" onchange="renderAnalytics()"><option value="">Course</option></select>
+          </div>
+        </div>
+        <div id="anlContent"><!-- dynamic --></div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  CLASS INCHARGE      ║
+           ╚══════════════════════╝ -->
+      <div id="pg-classincharge" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>Class Incharge Panel</h2><p>Full class management — attendance, overrides & alerts</p></div>
+          <div class="ph-right">
+            <select class="sel" id="ciClassSel" onchange="loadCIData()">
+              <option value="">-- Select Class --</option>
+            </select>
+            <button class="btn-primary" onclick="openOverrideModal('classincharge')"><i class="fa fa-pen-to-square"></i> Override</button>
+            <button class="btn-secondary" onclick="bulkSendAlerts()"><i class="fa fa-bell"></i> Alert Low</button>
+          </div>
+        </div>
+        <div id="ciContent"><div class="empty-msg"><i class="fa fa-clipboard-user"></i><p>Select a class to manage</p></div></div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  ALERTS              ║
+           ╚══════════════════════╝ -->
+      <div id="pg-alerts" class="page dn">
+        <!-- Alerts page is fully rendered by renderAlertsPage() in app.js -->
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  FACULTY DASHBOARD   ║
+           ║  (when logged as fac)║
+           ╚══════════════════════╝ -->
+      <div id="pg-fac-dashboard" class="page dn">
+        <div id="facDashContent"><!-- filled dynamically --></div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  MY TIMETABLE (Fac)  ║
+           ╚══════════════════════╝ -->
+      <div id="pg-my-timetable" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>My Timetable</h2><p>Your weekly teaching schedule</p></div>
+        </div>
+        <div id="myTTContent"><!-- filled dynamically --></div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  MY ATTENDANCE (Fac) ║
+           ╚══════════════════════╝ -->
+      <div id="pg-my-attendance" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>My Attendance Record</h2><p>Your attendance managed by Admin/HOD</p></div>
+        </div>
+        <div id="myAttContent"><!-- filled dynamically --></div>
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  MY CLASSES (Fac)    ║
+           ╚══════════════════════╝ -->
+      <div id="pg-my-classes" class="page dn">
+        <div class="page-header">
+          <div class="ph-left"><h2>My Classes</h2><p>Student attendance in your subject sessions</p></div>
+          <div class="ph-right">
+            <select class="sel" id="myClassSel" onchange="renderMyClass()">
+              <option value="">Select Class</option>
+            </select>
+          </div>
+        </div>
+        <div id="myClassContent"><div class="empty-msg"><i class="fa fa-users-class"></i><p>Select a class to view</p></div></div>
+      </div>
+
+
+      <!-- ╔══════════════════════╗
+           ║  PAGE: ENROLL        ║
+           ╚══════════════════════╝ -->
+      <div id="pg-students" class="page dn">
+        <!-- content built dynamically by renderStudentsPage() -->
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  PAGE: MANAGE HOD    ║
+           ╚══════════════════════╝ -->
+      <div id="pg-manage-hod" class="page dn">
+        <!-- content built dynamically by renderManageHodPage() -->
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  PAGE: REPORTS       ║
+           ╚══════════════════════╝ -->
+      <div id="pg-reports" class="page dn">
+        <!-- content built dynamically by renderReportsPage() -->
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  PAGE: SETTINGS      ║
+           ╚══════════════════════╝ -->
+      <div id="pg-settings" class="page dn">
+        <!-- content built dynamically by renderSettingsPage() -->
+      </div>
+
+      <!-- ╔══════════════════════╗
+           ║  PAGE: COURSES       ║
+           ╚══════════════════════╝ -->     <div id=\"pg-courses\" class=\"page dn\">       <!-- content built dynamically by renderCoursesPage() -->      </div>     <!-- ╔══════════════════════╗         ║  PAGE: TRAIN MODELS  ║\n           ╚══════════════════════╝ -->
+      <div id="pg-train" class="page dn">
+        <!-- content built dynamically by renderTrainPage() -->
+      </div>
+
+      <div id="pg-correction" class="page dn">
+        <!-- content built dynamically by renderStudentCorrectionPage() -->
+      </div>
+
+    </div><!-- /page-area -->
+  </div><!-- /app-main -->
+</div><!-- /app-shell -->
+
+<!-- ═══════════════════ MODALS ═══════════════════ -->
+
+<!-- ================================================================
+     Override Modals v12.0 — Professional Hierarchical Role-Based
+     THREE separate forms — one per actor role (Admin / HOD / Staff)
+     Shown automatically based on the logged-in user's JWT role.
+     ================================================================ -->
+
+<!-- ── ADMIN → HOD Override Modal ─────────────────────────── -->
+<div id="overrideModal_admin" class="modal-bg dn">
+  <div class="modal-box" style="max-width:580px;width:96%">
+    <div class="modal-header" style="background:linear-gradient(135deg,#dc2626,#9333ea);color:#fff;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem">
+      <h3 style="color:#fff;margin:0;font-size:1.05rem"><i class="fa fa-shield-halved"></i> Admin Dashboard — HOD Attendance Override</h3>
+      <button onclick="closeModal('overrideModal_admin')" style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:1.1rem"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="max-height:78vh;overflow-y:auto;padding:1.25rem">
+      <!-- Role Badge -->
+      <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:.5rem 1rem;margin-bottom:1rem;font-size:.82rem;color:#991b1b;display:flex;align-items:center;gap:.5rem">
+        <i class="fa fa-user-shield"></i>
+        <span><strong>Admin</strong> — You can only override <strong>HOD</strong> attendance records. Staff and Student records are outside your override scope.</span>
+      </div>
+
+      <!-- Section: Who is overriding -->
+      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#0284c7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-user-gear"></i> Modifier (Admin)</div>
+        <div class="fg">
+          <label style="font-size:.8rem;font-weight:600">Admin ID <span style="color:#ef4444">*</span></label>
+          <input id="adm_staffId" placeholder="Your Admin ID" style="font-weight:600"/>
+        </div>
+      </div>
+
+      <!-- Section: Target HOD -->
+      <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-crosshairs"></i> Target HOD Record</div>
+        <div class="fg-2">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">HOD ID <span style="color:#ef4444">*</span></label>
+            <input id="adm_hodId" placeholder="e.g. HOD001" style="font-family:monospace;font-weight:600;text-transform:uppercase"/>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Department <span style="color:#ef4444">*</span></label>
+            <select id="adm_dept">
+              <option value="">— Select —</option>
+              <option value="CSE">CSE</option><option value="IT">IT</option>
+              <option value="ECE">ECE</option><option value="EEE">EEE</option>
+              <option value="MECH">MECH</option><option value="CIVIL">CIVIL</option>
+              <option value="AIDS">AIDS</option><option value="AIML">AIML</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg" style="margin-top:.6rem">
+          <label style="font-size:.79rem;font-weight:600">Date <span style="color:#ef4444">*</span></label>
+          <input type="date" id="adm_date"/>
+        </div>
+      </div>
+
+      <!-- Section: Course & Period (not required for HOD override per diagram, but included for completeness) -->
+      <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-arrow-right-arrow-left"></i> Attendance Change</div>
+        <div class="fg-2">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Attendance From <span style="color:#ef4444">*</span></label>
+            <select id="adm_from">
+              <option value="Absent">Absent</option><option value="Present">Present</option>
+              <option value="Late">Late</option><option value="OD">OD</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Attendance To <span style="color:#ef4444">*</span></label>
+            <select id="adm_to">
+              <option value="Present">Present</option><option value="Absent">Absent</option>
+              <option value="Late">Late</option><option value="OD">OD</option><option value="Medical">Medical</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Reason -->
+      <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:.75rem 1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#be123c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-pen-to-square"></i> Reason</div>
+        <div class="fg" style="margin-bottom:.6rem">
+          <label style="font-size:.79rem;font-weight:600">Reason Category</label>
+          <select id="adm_cat">
+            <option value="">— select category —</option>
+            <option value="Official Duty">Official Duty</option>
+            <option value="Medical Leave">Medical Leave</option>
+            <option value="Administrative Work">Administrative Work</option>
+            <option value="Conference/Seminar">Conference / Seminar</option>
+            <option value="Other">Other (explain below)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label style="font-size:.79rem;font-weight:600">Reason <span style="color:#ef4444">*</span></label>
+          <textarea id="adm_reason" rows="3" placeholder="Describe clearly why you are modifying this HOD's attendance record..." style="resize:vertical"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:.9rem 1.25rem;display:flex;justify-content:flex-end;gap:.75rem">
+      <button class="btn-secondary" onclick="closeModal('overrideModal_admin')"><i class="fa fa-xmark"></i> Cancel</button>
+      <button class="btn-primary" onclick="submitOverrideAdmin()" style="background:linear-gradient(135deg,#dc2626,#9333ea);min-width:160px"><i class="fa fa-save"></i> Submit Override</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── HOD → Staff Override Modal ─────────────────────────── -->
+<div id="overrideModal_hod" class="modal-bg dn">
+  <div class="modal-box" style="max-width:620px;width:96%">
+    <div class="modal-header" style="background:linear-gradient(135deg,#0369a1,#0891b2);color:#fff;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem">
+      <h3 style="color:#fff;margin:0;font-size:1.05rem"><i class="fa fa-user-tie"></i> HOD Dashboard — Staff Attendance Override</h3>
+      <button onclick="closeModal('overrideModal_hod')" style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:1.1rem"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="max-height:78vh;overflow-y:auto;padding:1.25rem">
+      <!-- Role Badge -->
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:.5rem 1rem;margin-bottom:1rem;font-size:.82rem;color:#1e40af;display:flex;align-items:center;gap:.5rem">
+        <i class="fa fa-user-tie"></i>
+        <span><strong>HOD</strong> — You can only override <strong>Staff</strong> attendance records. HOD and Student records are outside your override scope.</span>
+      </div>
+
+      <!-- Section: Who is overriding -->
+      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#0284c7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-user-gear"></i> Modifier (HOD)</div>
+        <div class="fg">
+          <label style="font-size:.8rem;font-weight:600">HOD ID <span style="color:#ef4444">*</span></label>
+          <input id="hod_hodId" placeholder="Your HOD ID" style="font-weight:600"/>
+        </div>
+      </div>
+
+      <!-- Section: Target Staff -->
+      <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-crosshairs"></i> Target Staff Record</div>
+        <div class="fg-2">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Staff ID <span style="color:#ef4444">*</span></label>
+            <input id="hod_staffId" placeholder="e.g. FAC001" style="font-family:monospace;font-weight:600;text-transform:uppercase"/>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Department <span style="color:#ef4444">*</span></label>
+            <select id="hod_dept">
+              <option value="">— Select —</option>
+              <option value="CSE">CSE</option><option value="IT">IT</option>
+              <option value="ECE">ECE</option><option value="EEE">EEE</option>
+              <option value="MECH">MECH</option><option value="CIVIL">CIVIL</option>
+              <option value="AIDS">AIDS</option><option value="AIML">AIML</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Course & Period -->
+      <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-book-open"></i> Subject &amp; Period</div>
+        <div class="fg-2" style="margin-bottom:.6rem">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Course Code <span style="color:#ef4444">*</span></label>
+            <input id="hod_courseCode" placeholder="e.g. CS3501" style="font-family:monospace;font-weight:600;text-transform:uppercase"/>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Course Name</label>
+            <input id="hod_courseName" placeholder="e.g. Data Structures"/>
+          </div>
+        </div>
+        <div class="fg-2">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Period <span style="color:#ef4444">*</span></label>
+            <select id="hod_period">
+              <option value="">— Select —</option>
+              <option value="P1 08:55-09:45">P1 — 08:55 to 09:45</option>
+              <option value="P2 09:45-10:35">P2 — 09:45 to 10:35</option>
+              <option value="P3 10:55-11:45">P3 — 10:55 to 11:45</option>
+              <option value="P4 11:45-12:35">P4 — 11:45 to 12:35</option>
+              <option value="P5 13:35-14:25">P5 — 13:35 to 14:25</option>
+              <option value="P6 14:25-15:15">P6 — 14:25 to 15:15</option>
+              <option value="P7 15:15-16:05">P7 — 15:15 to 16:05</option>
+              <option value="Manual">Manual</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Date <span style="color:#ef4444">*</span></label>
+            <input type="date" id="hod_date"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Attendance & Reason -->
+      <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:.75rem 1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#be123c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-arrow-right-arrow-left"></i> Attendance Change &amp; Reason</div>
+        <div class="fg-2" style="margin-bottom:.6rem">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Attendance From <span style="color:#ef4444">*</span></label>
+            <select id="hod_from">
+              <option value="Absent">Absent</option><option value="Present">Present</option>
+              <option value="Late">Late</option><option value="OD">OD</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Attendance To <span style="color:#ef4444">*</span></label>
+            <select id="hod_to">
+              <option value="Present">Present</option><option value="Absent">Absent</option>
+              <option value="Late">Late</option><option value="OD">OD</option><option value="Medical">Medical</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:.6rem">
+          <label style="font-size:.79rem;font-weight:600">Reason Category</label>
+          <select id="hod_cat">
+            <option value="">— select category —</option>
+            <option value="Official Duty">Official Duty</option>
+            <option value="OD-Conference">OD — Conference / Seminar</option>
+            <option value="Medical Leave">Medical Leave</option>
+            <option value="Administrative">Administrative Work</option>
+            <option value="Late Entry">Late Entry</option>
+            <option value="Other">Other (explain below)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label style="font-size:.79rem;font-weight:600">Reason <span style="color:#ef4444">*</span></label>
+          <textarea id="hod_reason" rows="3" placeholder="Describe clearly why you are modifying this staff member's attendance record..." style="resize:vertical"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:.9rem 1.25rem;display:flex;justify-content:flex-end;gap:.75rem">
+      <button class="btn-secondary" onclick="closeModal('overrideModal_hod')"><i class="fa fa-xmark"></i> Cancel</button>
+      <button class="btn-primary" onclick="submitOverrideHod()" style="background:linear-gradient(135deg,#0369a1,#0891b2);min-width:160px"><i class="fa fa-save"></i> Submit Override</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Staff → Student Override Modal ─────────────────────── -->
+<div id="overrideModal_staff" class="modal-bg dn">
+  <div class="modal-box" style="max-width:680px;width:96%">
+    <div class="modal-header" style="background:linear-gradient(135deg,#059669,#0891b2);color:#fff;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem">
+      <h3 style="color:#fff;margin:0;font-size:1.05rem"><i class="fa fa-chalkboard-teacher"></i> Staff Dashboard — Student Attendance Override</h3>
+      <button onclick="closeModal('overrideModal_staff')" style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:1.1rem"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="max-height:78vh;overflow-y:auto;padding:1.25rem">
+      <!-- Role Badge -->
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:.5rem 1rem;margin-bottom:1rem;font-size:.82rem;color:#14532d;display:flex;align-items:center;gap:.5rem">
+        <i class="fa fa-chalkboard-teacher"></i>
+        <span><strong>Staff</strong> — You can only override <strong>Student</strong> attendance records. HOD and Staff records are outside your override scope.</span>
+      </div>
+
+      <!-- Section: Who is overriding -->
+      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#0284c7;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-user-gear"></i> Modifier (Staff)</div>
+        <div class="fg">
+          <label style="font-size:.8rem;font-weight:600">Staff ID <span style="color:#ef4444">*</span></label>
+          <input id="stf_staffId" placeholder="Your Staff / Faculty ID" style="font-weight:600"/>
+        </div>
+      </div>
+
+      <!-- Section: Which class -->
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#16a34a;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-school"></i> Class Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.6rem">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Department <span style="color:#ef4444">*</span></label>
+            <select id="stf_dept">
+              <option value="">Select</option>
+              <option value="CSE">CSE</option><option value="IT">IT</option>
+              <option value="ECE">ECE</option><option value="EEE">EEE</option>
+              <option value="MECH">MECH</option><option value="CIVIL">CIVIL</option>
+              <option value="AIDS">AIDS</option><option value="AIML">AIML</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Year <span style="color:#ef4444">*</span></label>
+            <select id="stf_year">
+              <option value="">Select</option>
+              <option value="1">1st Year</option><option value="2">2nd Year</option>
+              <option value="3">3rd Year</option><option value="4">4th Year</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Semester <span style="color:#ef4444">*</span></label>
+            <select id="stf_semester">
+              <option value="">Select</option>
+              <option value="1">Sem 1</option><option value="2">Sem 2</option>
+              <option value="3">Sem 3</option><option value="4">Sem 4</option>
+              <option value="5">Sem 5</option><option value="6">Sem 6</option>
+              <option value="7">Sem 7</option><option value="8">Sem 8</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Section <span style="color:#ef4444">*</span></label>
+            <select id="stf_section">
+              <option value="">Select</option>
+              <option value="A">Section A</option>
+              <option value="B">Section B</option>
+              <option value="C">Section C</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Target Student -->
+      <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-crosshairs"></i> Target Student Record</div>
+        <div class="fg-2">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Register Number <span style="color:#ef4444">*</span></label>
+            <input id="stf_regNum" placeholder="e.g. 727622BAD001" oninput="ovLookupStudentStaff()" style="font-family:monospace;font-weight:600;text-transform:uppercase"/>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Student Name <span style="color:#64748b;font-weight:400">(auto-filled)</span></label>
+            <input id="stf_studentName" placeholder="Auto-filled or type manually"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Course & Period -->
+      <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-book-open"></i> Course &amp; Period</div>
+        <div class="fg-2" style="margin-bottom:.6rem">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Course Code <span style="color:#ef4444">*</span></label>
+            <input id="stf_courseCode" placeholder="e.g. CS3501" style="font-family:monospace;font-weight:600;text-transform:uppercase"/>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Course Name</label>
+            <input id="stf_courseName" placeholder="e.g. Data Structures"/>
+          </div>
+        </div>
+        <div class="fg-2">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Period <span style="color:#ef4444">*</span></label>
+            <select id="stf_period">
+              <option value="">— Select —</option>
+              <option value="P1 08:55-09:45">P1 — 08:55 to 09:45</option>
+              <option value="P2 09:45-10:35">P2 — 09:45 to 10:35</option>
+              <option value="P3 10:55-11:45">P3 — 10:55 to 11:45</option>
+              <option value="P4 11:45-12:35">P4 — 11:45 to 12:35</option>
+              <option value="P5 13:35-14:25">P5 — 13:35 to 14:25</option>
+              <option value="P6 14:25-15:15">P6 — 14:25 to 15:15</option>
+              <option value="P7 15:15-16:05">P7 — 15:15 to 16:05</option>
+              <option value="Manual">Manual</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Date <span style="color:#ef4444">*</span></label>
+            <input type="date" id="stf_date"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Attendance & Reason -->
+      <div style="background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:.75rem 1rem">
+        <div style="font-size:.72rem;font-weight:700;color:#be123c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem"><i class="fa fa-arrow-right-arrow-left"></i> Attendance Change &amp; Reason</div>
+        <div class="fg-2" style="margin-bottom:.6rem">
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Attendance From <span style="color:#ef4444">*</span></label>
+            <select id="stf_from">
+              <option value="Absent">Absent</option><option value="Present">Present</option>
+              <option value="Late">Late</option><option value="OD">OD</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label style="font-size:.79rem;font-weight:600">Attendance To <span style="color:#ef4444">*</span></label>
+            <select id="stf_to">
+              <option value="Present">Present</option><option value="Absent">Absent</option>
+              <option value="Late">Late</option><option value="OD">OD</option><option value="Medical">Medical</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom:.6rem">
+          <label style="font-size:.79rem;font-weight:600">Reason Category</label>
+          <select id="stf_cat">
+            <option value="">— select category —</option>
+            <option value="OD-Hackathon">OD — Hackathon</option>
+            <option value="OD-Sports">OD — Sports Event</option>
+            <option value="OD-Symposium">OD — Symposium / Conference</option>
+            <option value="OD-Placement">OD — Placement Drive</option>
+            <option value="OD-NSS">OD — NSS / NCC Activity</option>
+            <option value="Medical">Medical Leave (with certificate)</option>
+            <option value="Family Emergency">Family Emergency</option>
+            <option value="Late Entry">Late Entry (after permission)</option>
+            <option value="Other">Other (explain below)</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label style="font-size:.79rem;font-weight:600">Reason <span style="color:#ef4444">*</span> <span style="color:#64748b;font-weight:400">(permanently recorded in audit trail)</span></label>
+          <textarea id="stf_reason" rows="3" placeholder="Describe clearly why you are modifying this student's attendance record..." style="resize:vertical"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:.9rem 1.25rem;display:flex;justify-content:flex-end;gap:.75rem">
+      <button class="btn-secondary" onclick="closeModal('overrideModal_staff')"><i class="fa fa-xmark"></i> Cancel</button>
+      <button class="btn-primary" onclick="submitOverrideStaff()" style="background:linear-gradient(135deg,#059669,#0891b2);min-width:160px"><i class="fa fa-save"></i> Submit Override</button>
+    </div>
+  </div>
+</div>
+
+<!-- Legacy alias modal id — kept so any old references still work -->
+<div id="overrideModal" style="display:none" aria-hidden="true"></div>
+
+
+<!-- Faculty Attendance Modal -->
+<div id="facAttModal" class="modal-bg dn">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3><i class="fa fa-user-clock"></i> Mark Faculty Attendance</h3>
+      <button onclick="closeModal('facAttModal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="fg-2">
+        <div class="fg"><label>Faculty *</label>
+          <select id="fam_faculty"><option value="">Select faculty</option></select>
+        </div>
+        <div class="fg"><label>Date *</label><input type="date" id="fam_date"/></div>
+      </div>
+      <div class="fg-2">
+        <div class="fg"><label>Status *</label>
+          <select id="fam_status">
+            <option value="present">Present</option><option value="absent">Absent</option>
+            <option value="late">Late Arrival</option><option value="halfday">Half Day</option>
+            <option value="od">On Duty</option><option value="leave">Leave</option>
+          </select>
+        </div>
+        <div class="fg"><label>Arrival Time</label><input type="time" id="fam_time" value="09:00"/></div>
+      </div>
+      <div class="fg"><label>Reason <span class="hint">(required for absent/late/halfday)</span></label>
+        <textarea id="fam_reason" rows="2" placeholder="Enter reason..."></textarea>
+      </div>
+      <div class="fg"><label>Updated By (Admin/HOD ID) *</label>
+        <input id="fam_updater" placeholder="e.g. HOD-SOC or ADMIN-001"/></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('facAttModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveFacultyAttendance()"><i class="fa fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generic Info Modal -->
+<div id="infoModal" class="modal-bg dn">
+  <div class="modal-box">
+    <div class="modal-header"><h3 id="infoModalTitle">Details</h3>
+      <button onclick="closeModal('infoModal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="infoModalBody"></div>
+    <div class="modal-footer"><button class="btn-primary" onclick="closeModal('infoModal')">Close</button></div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div id="toastContainer"></div>
+
+<!-- HOD Add / Edit Modal -->
+<div id="hodModal" class="modal-bg dn">
+  <div class="modal-box" style="max-width:580px;width:96%">
+    <div class="modal-header" style="background:linear-gradient(135deg,#7c3aed,#4f46e5);color:#fff;border-radius:12px 12px 0 0">
+      <h3 id="hodModalTitle" style="color:#fff;margin:0"><i class="fa fa-user-tie"></i> HOD Account</h3>
+      <button onclick="closeModal('hodModal')" style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:1.1rem"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="padding:1.25rem">
+      <input type="hidden" id="hod_edit_id"/>
+      <div class="fg-2">
+        <div class="fg">
+          <label>HOD ID <span style="color:#ef4444">*</span></label>
+          <input id="hod_id" placeholder="e.g. HOD001" style="font-family:monospace;font-weight:600;text-transform:uppercase"/>
+        </div>
+        <div class="fg">
+          <label>Full Name <span style="color:#ef4444">*</span></label>
+          <input id="hod_name" placeholder="e.g. Dr. A. Kumar"/>
+        </div>
+      </div>
+      <div class="fg-2">
+        <div class="fg">
+          <label>Department <span style="color:#ef4444">*</span></label>
+          <select id="hod_dept">
+            <option value="">Select</option>
+            <option value="CS">CS</option><option value="IT">IT</option>
+            <option value="ECE">ECE</option><option value="EEE">EEE</option>
+            <option value="MECH">MECH</option><option value="CIVIL">CIVIL</option>
+            <option value="AIDS">AIDS</option><option value="AIML">AIML</option>
+            <option value="MBA">MBA</option><option value="MCA">MCA</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Designation</label>
+          <input id="hod_designation" placeholder="Head of Department" value="Head of Department"/>
+        </div>
+      </div>
+      <div class="fg-2">
+        <div class="fg">
+          <label>Email</label>
+          <input id="hod_email" type="email" placeholder="hod@college.edu"/>
+        </div>
+        <div class="fg">
+          <label>Mobile</label>
+          <input id="hod_mobile" placeholder="9XXXXXXXXX"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Password <span id="hod_pass_hint" style="color:#64748b;font-size:.8rem;font-weight:400">(leave blank to keep current)</span></label>
+        <input id="hod_password" type="password" placeholder="Default: hod@2025"/>
+      </div>
+    </div>
+    <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:.9rem 1.25rem;display:flex;justify-content:flex-end;gap:.75rem">
+      <button class="btn-secondary" onclick="closeModal('hodModal')"><i class="fa fa-xmark"></i> Cancel</button>
+      <button class="btn-primary" onclick="saveHod()" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)"><i class="fa fa-save"></i> Save HOD</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOD Attendance Modal -->
+<div id="hodAttModal" class="modal-bg dn">
+  <div class="modal-box" style="max-width:500px;width:96%">
+    <div class="modal-header" style="background:linear-gradient(135deg,#0891b2,#0284c7);color:#fff;border-radius:12px 12px 0 0">
+      <h3 style="color:#fff;margin:0"><i class="fa fa-calendar-check"></i> Mark HOD Attendance</h3>
+      <button onclick="closeModal('hodAttModal')" style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:1.1rem"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" style="padding:1.25rem">
+      <input type="hidden" id="hod_att_id"/>
+      <div class="fg-2">
+        <div class="fg">
+          <label>HOD *</label>
+          <select id="hod_att_hod_id"><option value="">Select HOD</option></select>
+        </div>
+        <div class="fg">
+          <label>Date *</label>
+          <input type="date" id="hod_att_date"/>
+        </div>
+      </div>
+      <div class="fg-2">
+        <div class="fg">
+          <label>Status *</label>
+          <select id="hod_att_status">
+            <option value="present">Present</option>
+            <option value="absent">Absent</option>
+            <option value="late">Late Arrival</option>
+            <option value="halfday">Half Day</option>
+            <option value="od">On Duty</option>
+            <option value="leave">Leave</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Arrival Time</label>
+          <input type="time" id="hod_att_time" value="09:00"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Reason <span class="hint">(for absent/late/leave)</span></label>
+        <textarea id="hod_att_reason" rows="2" placeholder="Enter reason..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:.9rem 1.25rem;display:flex;justify-content:flex-end;gap:.75rem">
+      <button class="btn-secondary" onclick="closeModal('hodAttModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveHodAttendance()" style="background:linear-gradient(135deg,#0891b2,#0284c7)"><i class="fa fa-save"></i> Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOD Attendance Detail Modal -->
+<div id="hodAttDetailModal" class="modal-bg dn">
+  <div class="modal-box" style="max-width:700px;width:96%">
+    <div class="modal-header">
+      <h3 id="hodAttDetailTitle"><i class="fa fa-calendar-days"></i> HOD Attendance Log</h3>
+      <button onclick="closeModal('hodAttDetailModal')"><i class="fa fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="hodAttDetailBody" style="max-height:65vh;overflow-y:auto"></div>
+    <div class="modal-footer">
+      <button class="btn-primary" onclick="closeModal('hodAttDetailModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js?v=20260609"></script>
+<script src="features.js?v=20260609"></script>
+<script src="enroll_roles.js?v=20260609"></script>
+
+<script src="attendance.js?v=20260609"></script>
+<!-- E Auth Merge v9.7 — OTP forgot-password modal -->
+<script src="/frontend_otp_patch.js?v=20260609"></script>
+</body>
+</html>

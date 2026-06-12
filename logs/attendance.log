@@ -1,0 +1,182 @@
+2026-06-11 16:09:48,645 [INFO] database: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-11 16:09:48,739 [INFO] database: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-11 16:09:54,733 [INFO] database_postgres: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-11 16:09:56,252 [INFO] database_extras: DB extras ready
+2026-06-11 16:09:56,253 [INFO] database_extras: database_extras initialised
+2026-06-11 16:09:56,272 [ERROR] database_extras: seed_vinoth_kumar failed: table faculty has no column named joined_on
+2026-06-11 16:09:56,273 [INFO] database_extras: Vinoth Kumar seed complete
+2026-06-11 16:09:56,399 [INFO] api_extras: Extra routes registered (courses, electives, timetable, full-seed)
+2026-06-11 16:09:56,399 [INFO] api: Extra routes registered (courses, electives, timetable).
+2026-06-11 16:09:57,288 [INFO] edudrill_routes: EduDrill Pro analytics routes registered.
+2026-06-11 16:09:57,288 [INFO] api_features: Feature routes (departments + faculty + EduDrill) registered.
+2026-06-11 16:09:57,289 [INFO] api: Feature routes registered (departments + faculty).
+2026-06-11 16:09:58,136 [INFO] database_override: Override tables ready (v11.0 — hierarchical RBAC).
+2026-06-11 16:09:58,187 [INFO] api_override: Override routes registered (v11.0 — hierarchical RBAC) ✓
+2026-06-11 16:09:58,187 [INFO] api: Override routes registered (attendance overrides).
+2026-06-11 16:09:58,417 [INFO] api_hod: hod_attendance: added missing column 'att_date'
+2026-06-11 16:09:58,476 [INFO] api_hod: hod_attendance: added missing column 'arrival_time'
+2026-06-11 16:09:58,533 [INFO] api_hod: hod_attendance: added missing column 'reason'
+2026-06-11 16:09:58,576 [INFO] api_hod: hod_attendance: added missing column 'updated_by'
+2026-06-11 16:09:58,635 [INFO] api_hod: hod_attendance: added missing column 'created_at'
+2026-06-11 16:09:58,775 [INFO] api_hod: HOD management routes registered.
+2026-06-11 16:09:58,775 [INFO] api: HOD management routes registered.
+2026-06-11 16:09:58,831 [INFO] api_role_attendance: Role attendance routes registered (v10.2) ✓
+2026-06-11 16:09:58,832 [INFO] api_role_attendance:   → GET  /api/enrollment/counts
+2026-06-11 16:09:58,832 [INFO] api_role_attendance:   → GET  /api/staff/by-dept
+2026-06-11 16:09:58,833 [INFO] api_role_attendance:   → GET  /api/hod/by-dept
+2026-06-11 16:09:58,833 [INFO] api_role_attendance:   → POST /api/role/session/start
+2026-06-11 16:09:58,833 [INFO] api_role_attendance:   → POST /api/role/session/stop
+2026-06-11 16:09:58,834 [INFO] api_role_attendance:   → GET  /api/role/session/status
+2026-06-11 16:09:58,834 [INFO] api: Role attendance routes registered.
+2026-06-11 16:09:58,834 [INFO] api: slowapi rate limiting enabled.
+2026-06-11 16:09:59,035 [INFO] auth_routes: Added column must_reset_pwd to faculty table
+2026-06-11 16:09:59,077 [INFO] auth_routes: Added column employee_id to faculty table
+2026-06-11 16:09:59,078 [INFO] auth_routes: OTP table initialized in attendance.db
+2026-06-11 16:09:59,168 [INFO] api: OTP table ready.
+2026-06-11 16:09:59,185 [INFO] api: Auth extension routes registered (/auth/forgot-password etc.).
+2026-06-11 16:09:59,226 [INFO] api: User management routes registered (/user/).
+2026-06-11 16:09:59,230 [INFO] api: /api/auth/* convenience aliases registered.
+2026-06-11 16:09:59,230 [INFO] api: F-07: /api/faculty/<id>/email-hint (public, rate-limited) registered.
+2026-06-11 16:09:59,855 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC001
+2026-06-11 16:10:00,495 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC002
+2026-06-11 16:10:01,079 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC003
+2026-06-11 16:10:01,646 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC004
+2026-06-11 16:10:02,505 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC005
+2026-06-11 16:10:03,305 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC006
+2026-06-11 16:10:04,277 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC007
+2026-06-11 16:10:04,885 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC008
+2026-06-11 16:10:05,477 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC009
+2026-06-11 16:10:06,068 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC010
+2026-06-11 16:10:06,668 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC011
+2026-06-11 16:10:07,277 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC012
+2026-06-11 16:10:07,860 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC013
+2026-06-11 16:10:08,461 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC014
+2026-06-11 16:10:09,094 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC015
+2026-06-11 16:10:09,703 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC016
+2026-06-11 16:10:10,261 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC017
+2026-06-11 16:10:10,941 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC018
+2026-06-11 16:10:11,546 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC019
+2026-06-11 16:10:12,179 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC020
+2026-06-11 16:10:12,745 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC021
+2026-06-11 16:10:13,362 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC022
+2026-06-11 16:10:14,003 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC023
+2026-06-11 16:10:14,646 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC024
+2026-06-11 16:10:15,245 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC025
+2026-06-11 16:10:15,837 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC026
+2026-06-11 16:10:16,433 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC027
+2026-06-11 16:10:17,182 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC028
+2026-06-11 16:10:17,974 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC029
+2026-06-11 16:10:18,766 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC030
+2026-06-11 16:10:19,474 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC031
+2026-06-11 16:10:20,186 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC032
+2026-06-11 16:10:21,025 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC033
+2026-06-11 16:10:21,634 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC034
+2026-06-11 16:10:22,283 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC035
+2026-06-11 16:10:22,875 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC036
+2026-06-11 16:10:23,516 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC037
+2026-06-11 16:10:24,125 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC038
+2026-06-11 16:10:24,733 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC039
+2026-06-11 16:10:25,342 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC040
+2026-06-11 16:10:25,959 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC041
+2026-06-11 16:10:26,586 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC042
+2026-06-11 16:10:27,451 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC043
+2026-06-11 16:10:28,261 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC044
+2026-06-11 16:10:29,185 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC045
+2026-06-11 16:10:30,029 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC046
+2026-06-11 16:10:31,102 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC047
+2026-06-11 16:10:31,710 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC048
+2026-06-11 16:10:32,343 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC049
+2026-06-11 16:10:32,953 [INFO] database: migrate_plaintext_passwords: hashed faculty FAC050
+2026-06-11 16:10:33,595 [INFO] database: migrate_plaintext_passwords: hashed HOD HOD001
+2026-06-11 16:10:34,427 [INFO] database: migrate_plaintext_passwords: hashed HOD HOD002
+2026-06-11 16:10:35,195 [INFO] database: migrate_plaintext_passwords: hashed HOD HOD003
+2026-06-11 16:10:35,195 [INFO] database: migrate_plaintext_passwords: migrated 53 row(s) to bcrypt.
+2026-06-11 16:10:35,195 [INFO] api: F-02 startup migration: 53 password(s) upgraded to bcrypt.
+2026-06-11 16:10:35,196 [INFO] api: Route registration OK — all required endpoints present.
+2026-06-11 16:13:05,910 [INFO] utils.email_utils: [OTP] Email sent to suganyainbox25@gmail.com
+2026-06-11 16:15:52,542 [INFO] auth_routes: Admin password (bcrypt hash) persisted to .env file.
+2026-06-11 16:15:52,542 [INFO] auth_routes: Admin password reset (bcrypt) for suganyainbox25@gmail.com
+2026-06-11 19:19:46,269 [INFO] database: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-11 19:19:46,607 [INFO] database: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-11 19:20:23,137 [INFO] database_postgres: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-11 19:21:02,443 [INFO] database_extras: DB extras ready
+2026-06-11 19:21:02,444 [INFO] database_extras: database_extras initialised
+2026-06-11 19:21:02,484 [ERROR] database_extras: seed_vinoth_kumar failed: table faculty has no column named joined_on
+2026-06-11 19:21:02,486 [INFO] database_extras: Vinoth Kumar seed complete
+2026-06-11 19:21:02,564 [INFO] api_extras: Extra routes registered (courses, electives, timetable, full-seed)
+2026-06-11 19:21:02,565 [INFO] api: Extra routes registered (courses, electives, timetable).
+2026-06-11 19:21:02,869 [INFO] edudrill_routes: EduDrill Pro analytics routes registered.
+2026-06-11 19:21:02,870 [INFO] api_features: Feature routes (departments + faculty + EduDrill) registered.
+2026-06-11 19:21:02,870 [INFO] api: Feature routes registered (departments + faculty).
+2026-06-11 19:21:03,133 [INFO] database_override: Override tables ready (v11.0 — hierarchical RBAC).
+2026-06-11 19:21:03,188 [INFO] api_override: Override routes registered (v11.0 — hierarchical RBAC) ✓
+2026-06-11 19:21:03,188 [INFO] api: Override routes registered (attendance overrides).
+2026-06-11 19:21:03,381 [INFO] api_hod: HOD management routes registered.
+2026-06-11 19:21:03,382 [INFO] api: HOD management routes registered.
+2026-06-11 19:21:03,427 [INFO] api_role_attendance: Role attendance routes registered (v10.2) ✓
+2026-06-11 19:21:03,428 [INFO] api_role_attendance:   → GET  /api/enrollment/counts
+2026-06-11 19:21:03,428 [INFO] api_role_attendance:   → GET  /api/staff/by-dept
+2026-06-11 19:21:03,428 [INFO] api_role_attendance:   → GET  /api/hod/by-dept
+2026-06-11 19:21:03,428 [INFO] api_role_attendance:   → POST /api/role/session/start
+2026-06-11 19:21:03,428 [INFO] api_role_attendance:   → POST /api/role/session/stop
+2026-06-11 19:21:03,429 [INFO] api_role_attendance:   → GET  /api/role/session/status
+2026-06-11 19:21:03,429 [INFO] api: Role attendance routes registered.
+2026-06-11 19:21:03,429 [INFO] api: slowapi rate limiting enabled.
+2026-06-11 19:21:03,511 [INFO] auth_routes: OTP table initialized in attendance.db
+2026-06-11 19:21:03,512 [INFO] api: OTP table ready.
+2026-06-11 19:21:03,534 [INFO] api: Auth extension routes registered (/auth/forgot-password etc.).
+2026-06-11 19:21:03,567 [INFO] api: User management routes registered (/user/).
+2026-06-11 19:21:03,573 [INFO] api: /api/auth/* convenience aliases registered.
+2026-06-11 19:21:03,574 [INFO] api: F-07: /api/faculty/<id>/email-hint (public, rate-limited) registered.
+2026-06-11 19:21:03,734 [INFO] api: Route registration OK — all required endpoints present.
+2026-06-11 19:27:49,693 [INFO] api_override: Override authorised: actor=suganyainbox25@gmail.com (role=admin) → target=HOD001 (role=hod)
+2026-06-11 19:30:27,105 [INFO] auth_routes: forgot-password: email not found: suganyainbox32@gmail.com
+2026-06-11 19:39:23,852 [INFO] api: [EnrollOTP] OTP sent to suganyainbox32@gmail.com
+2026-06-11 19:39:39,580 [INFO] api: [EnrollOTP] Email verified for enrollment: suganyainbox32@gmail.com
+2026-06-11 19:41:02,901 [INFO] api: GET /api/train/status/all — admin=suganyainbox25@gmail.com
+2026-06-11 19:41:10,131 [INFO] api: POST /api/train/selective — admin=suganyainbox25@gmail.com role=staff id=FACSUGANYA
+2026-06-11 19:41:10,176 [INFO] api: Selective training stage: reading_images — FACSUGANYA/staff
+2026-06-11 19:41:10,177 [INFO] api: Selective training stage: processing_dataset — FACSUGANYA/staff
+2026-06-11 19:41:10,177 [INFO] api: Selective training stage: augmentation — FACSUGANYA/staff
+2026-06-11 19:41:10,178 [INFO] api: Selective training stage: training_model — FACSUGANYA/staff
+2026-06-11 19:42:00,656 [INFO] api: POST /api/train/selective — admin=suganyainbox25@gmail.com role=staff id=FACSUGANYA
+2026-06-11 19:42:16,619 [INFO] api: Selective training stage: saving_model — FACSUGANYA/staff
+2026-06-11 19:42:16,620 [INFO] api: Selective training stage: updating_trained_ids — FACSUGANYA/staff
+2026-06-11 19:42:16,620 [INFO] api: Selective training stage: completed — FACSUGANYA/staff
+2026-06-11 19:42:29,308 [INFO] api: GET /api/train/status/all — admin=suganyainbox25@gmail.com
+2026-06-11 20:00:37,403 [INFO] api: F-02 lazy-migrate: hashed password for faculty FACSUGANYA
+2026-06-11 20:02:16,147 [WARNING] api: F-02 lazy-migrate: could not hash HOD HOD001 — 'sqlite3.Row' object has no attribute 'get'
+2026-06-12 11:12:13,058 [INFO] database: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-12 11:12:13,157 [INFO] database: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-12 11:12:52,883 [INFO] database_postgres: SQLite DB ready at /mnt/storage/Downloads/softnix/attendance/fix/New folder/smf_merged_fixed/attendance.db
+2026-06-12 11:12:57,640 [INFO] database_extras: DB extras ready
+2026-06-12 11:12:57,641 [INFO] database_extras: database_extras initialised
+2026-06-12 11:12:57,655 [ERROR] database_extras: seed_vinoth_kumar failed: table faculty has no column named joined_on
+2026-06-12 11:12:57,656 [INFO] database_extras: Vinoth Kumar seed complete
+2026-06-12 11:12:57,728 [INFO] api_extras: Extra routes registered (courses, electives, timetable, full-seed)
+2026-06-12 11:12:57,729 [INFO] api: Extra routes registered (courses, electives, timetable).
+2026-06-12 11:12:57,998 [INFO] edudrill_routes: EduDrill Pro analytics routes registered.
+2026-06-12 11:12:57,999 [INFO] api_features: Feature routes (departments + faculty + EduDrill) registered.
+2026-06-12 11:12:58,000 [INFO] api: Feature routes registered (departments + faculty).
+2026-06-12 11:12:58,067 [INFO] database_override: Override tables ready (v11.0 — hierarchical RBAC).
+2026-06-12 11:12:58,112 [INFO] api_override: Override routes registered (v11.0 — hierarchical RBAC) ✓
+2026-06-12 11:12:58,112 [INFO] api: Override routes registered (attendance overrides).
+2026-06-12 11:12:58,235 [INFO] api_hod: HOD management routes registered.
+2026-06-12 11:12:58,236 [INFO] api: HOD management routes registered.
+2026-06-12 11:12:58,264 [INFO] api_role_attendance: Role attendance routes registered (v10.2) ✓
+2026-06-12 11:12:58,264 [INFO] api_role_attendance:   → GET  /api/enrollment/counts
+2026-06-12 11:12:58,265 [INFO] api_role_attendance:   → GET  /api/staff/by-dept
+2026-06-12 11:12:58,265 [INFO] api_role_attendance:   → GET  /api/hod/by-dept
+2026-06-12 11:12:58,265 [INFO] api_role_attendance:   → POST /api/role/session/start
+2026-06-12 11:12:58,265 [INFO] api_role_attendance:   → POST /api/role/session/stop
+2026-06-12 11:12:58,266 [INFO] api_role_attendance:   → GET  /api/role/session/status
+2026-06-12 11:12:58,266 [INFO] api: Role attendance routes registered.
+2026-06-12 11:12:58,266 [INFO] api: slowapi rate limiting enabled.
+2026-06-12 11:12:58,300 [INFO] auth_routes: OTP table initialized in attendance.db
+2026-06-12 11:12:58,309 [INFO] api: OTP table ready.
+2026-06-12 11:12:58,345 [INFO] api: Auth extension routes registered (/auth/forgot-password etc.).
+2026-06-12 11:12:58,399 [INFO] api: User management routes registered (/user/).
+2026-06-12 11:12:58,404 [INFO] api: /api/auth/* convenience aliases registered.
+2026-06-12 11:12:58,405 [INFO] api: F-07: /api/faculty/<id>/email-hint (public, rate-limited) registered.
+2026-06-12 11:12:58,618 [INFO] api: Route registration OK — all required endpoints present.
+2026-06-12 11:15:21,488 [INFO] api: GET /api/train/status/all — admin=suganyainbox25@gmail.com

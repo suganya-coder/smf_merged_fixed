@@ -1,0 +1,6 @@
+models/*.yml
+models/*.pkl
+data/dataset/
+data/known_faces/
+__pycache__/
+*.pyc
